@@ -11,6 +11,7 @@ window.Player = (function(){
 		this.sprite.scale.setTo(1.5, 1.5);
     	this.game.physics.arcade.enable(this.sprite);
     	this.sprite.anchor.setTo(0.5, 0.5);
+    	this.sprite.body.collideWorldBounds = true;
 	}
 
 	Player.prototype.update = function(){
