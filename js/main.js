@@ -31,7 +31,7 @@ app.main = {
 		this.land.fixedToCamera = true;
 
 		//Create player
-		this.player = new app.player.Player(this.game, 0, 0);
+		this.player = new Player(this.game, 0, 0);
 
     	//Setup keyboard daemon
 		this.keyboard = this.game.input.keyboard.createCursorKeys();

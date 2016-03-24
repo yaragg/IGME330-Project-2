@@ -1,23 +1,19 @@
 "use strict";
 
-var app = app || {};
+window.Player = (function(){
 
-app.player = {
-	game : undefined,
-	sprite : undefined,
-	playerSpeed : 200,
-	fireRate : 100,
-	nextFire : 0,
-
-	Player : function(game, x, y){
+	function Player(game, x, y){
 		this.game = game;
+		this.playerSpeed = 200;
+		this.fireRate = 100;
+		this.nextFire = 0;
 		this.sprite = this.game.add.sprite(x, y, 'player');
 		this.sprite.scale.setTo(1.5, 1.5);
     	this.game.physics.arcade.enable(this.sprite);
     	this.sprite.anchor.setTo(0.5, 0.5);
-	},
+	}
 
-	Player.update : function(){
+	Player.prototype.update = function(){
 		this.sprite.body.velocity.x = 0;
     	this.sprite.body.velocity.y = 0;
 
@@ -33,4 +29,6 @@ app.player = {
         this.sprite.rotation = Math.PI/2 + this.game.physics.arcade.angleToPointer(this.sprite);
 	}
 
-}
+	return Player;
+
+}());
