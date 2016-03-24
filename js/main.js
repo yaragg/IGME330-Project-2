@@ -8,6 +8,7 @@ app.main = {
 	height : 600,
 	land : undefined,
 	player : undefined,
+	playerShots : undefined,
 	enemies : undefined,
 	keyboard : undefined,
 
@@ -33,17 +34,6 @@ app.main = {
 		this.land = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'land');
 		// this.land.fixedToCamera = true;
 
-		//Create player
-		this.player = new Player(this.game, this.game.world.centerX, this.game.world.centerY);
-
-		//Setup camera
-		this.game.camera.follow(this.player.sprite);
-		// this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
-		// this.game.camera.deadzone = new Phaser.Rectangle(175, 175, 450, 250);
-		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
-		this.game.camera.focusOn(this.player.sprite);
-
-
     	//Setup keyboard daemon
 		this.keyboard = this.game.input.keyboard.createCursorKeys();
 		this.keyboard.w = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -51,7 +41,33 @@ app.main = {
 		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
 
+		//Creates player shots (fireballs)
+		this.playerShots = this.game.add.group();
+		// this.playerShots.enableBody = true;
+		// this.playerShots.createMultiple(10, 'shot', 0, false);
+		// this.playerShots.setAll('anchor.x', 0.5);
+		// this.playerShots.setAll('anchor.y', 0.5);
+		// this.playerShots.setAll('outOfBoundsKill', true);
+		// this.playerShots.setAll('checkWorldBounds', true);
+		for(var i=0; i<10; i++){
+			var shot = this.playerShots.create(0, 0, 'shot', [0], false);
+			shot.anchor.setTo(0.5, 0.5);
+			shot.outOfBoundsKill = true;
+			shot.checkWorldBounds = true;
+	    	this.game.physics.arcade.enable(shot);
+			// shot.animations.add('shot', [0, 1, 2, 3, 4, 5, 6, 7]);
+			shot.animations.add('shot', [32, 33, 34, 35, 36, 37, 38, 39]);
+		}
 
+		//Create player
+		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
+
+		//Setup camera
+		this.game.camera.follow(this.player.sprite);
+		// this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
+		// this.game.camera.deadzone = new Phaser.Rectangle(175, 175, 450, 250);
+		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
+		this.game.camera.focusOn(this.player.sprite);
 	},
 
 	update : function(){
