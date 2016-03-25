@@ -61,18 +61,20 @@ app.main = {
 
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
+		this.game.world.add(this.player);
 
 		//Create enemy
+		this.enemies = this.game.add.group();
 		for(var i=0; i<1; i++){
-			this.enemies.push(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
+			this.enemies.add(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
 		}
 
 		//Setup camera
-		this.game.camera.follow(this.player.sprite);
+		this.game.camera.follow(this.player);
 		// this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
 		// this.game.camera.deadzone = new Phaser.Rectangle(175, 175, 450, 250);
 		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
-		this.game.camera.focusOn(this.player.sprite);
+		this.game.camera.focusOn(this.player);
 	},
 
 	update : function(){
@@ -80,10 +82,13 @@ app.main = {
 		// this.land.tilePosition.x = -this.game.camera.x;
 		// this.land.tilePosition.y = -this.game.camera.y;
 		this.player.update();
-		for(var i=0; i<this.enemies.length; i++){
-			this.enemies[i].update();
-			this.game.physics.arcade.collide(this.player.sprite, this.enemies[i].sprite);
-		}
+		// for(var i=0; i<this.enemies.length; i++){
+		// 	// this.enemies[i].update();
+		// 	// this.game.physics.arcade.overlap(this.playerShots, this.enemies[i].sprite);
+		// 	this.game.physics.arcade.collide(this.player, this.enemies[i].sprite);
+		// }
+		this.enemies.callAllExists('update', true);
+		this.game.physics.arcade.collide(this.player, this.enemies);
 
 
 	}
