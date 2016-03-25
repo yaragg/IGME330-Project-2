@@ -9,7 +9,7 @@ app.main = {
 	land : undefined,
 	player : undefined,
 	playerShots : undefined,
-	enemies : undefined,
+	enemies : [],
 	keyboard : undefined,
 
 	init : function(){
@@ -18,7 +18,7 @@ app.main = {
 
 	preload : function(){
 		this.game.load.image('player', 'images/wizard.png');
-	    this.game.load.image('enemy', 'images/slime.png');
+	    this.game.load.spritesheet('enemy', 'images/slime.png', 32, 32);
 	    this.game.load.image('land', 'images/grass.png');
 	    this.game.load.spritesheet('shot', 'images/fireball.png', 64, 64);
 	},
@@ -62,6 +62,11 @@ app.main = {
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
 
+		//Create enemy
+		for(var i=0; i<1; i++){
+			this.enemies.push(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
+		}
+
 		//Setup camera
 		this.game.camera.follow(this.player.sprite);
 		// this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
@@ -75,6 +80,10 @@ app.main = {
 		// this.land.tilePosition.x = -this.game.camera.x;
 		// this.land.tilePosition.y = -this.game.camera.y;
 		this.player.update();
+		for(var i=0; i<this.enemies.length; i++){
+			this.enemies[i].update();
+			this.game.physics.arcade.collide(this.player.sprite, this.enemies[i].sprite);
+		}
 
 
 	}
