@@ -19,9 +19,9 @@ app.main = {
 
 	preload : function(){
 		this.game.load.image('player', 'images/wizard.png');
-	    this.game.load.spritesheet('enemy', 'images/slime.png', 32, 32);
+	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    this.game.load.image('land', 'images/grass.png');
-	    this.game.load.spritesheet('shot', 'images/fireball.png', 64, 64);
+	    this.game.load.spritesheet('shot', 'images/fireball.png', 63, 18);
 	},
 
 	create : function(){
@@ -50,15 +50,16 @@ app.main = {
 		// this.playerShots.setAll('anchor.y', 0.5);
 		// this.playerShots.setAll('outOfBoundsKill', true);
 		// this.playerShots.setAll('checkWorldBounds', true);
-		for(var i=0; i<10; i++){
-			var shot = this.playerShots.create(0, 0, 'shot', [0], false);
-			// var shot = new Phaser.Sprite(this, 0, 0, 'shot', [0]);
-			shot.anchor.setTo(0.5, 0.5);
-			shot.outOfBoundsKill = true;
-			shot.checkWorldBounds = true;
-	    	this.game.physics.arcade.enable(shot);
-			// shot.animations.add('shot', [0, 1, 2, 3, 4, 5, 6, 7]);
-			shot.animations.add('shot', [32, 33, 34, 35, 36, 37, 38, 39]);
+		for(var i=0; i<1; i++){
+			// var shot = this.playerShots.create(0, 0, 'shot', [0], false);
+			// // var shot = new Phaser.Sprite(this, 0, 0, 'shot', [0]);
+			// shot.anchor.setTo(0.5, 0.5);
+			// shot.outOfBoundsKill = true;
+			// shot.checkWorldBounds = true;
+	    	// this.game.physics.arcade.enable(shot);
+			// // shot.animations.add('shot', [0, 1, 2, 3, 4, 5, 6, 7]);
+			// shot.animations.add('shot', [32, 33, 34, 35, 36, 37, 38, 39]);
+			this.playerShots.add(new Spell(this, this.game, 0, 0));
 		}
 
 		//Create player
@@ -84,6 +85,13 @@ app.main = {
 		// this.land.tilePosition.x = -this.game.camera.x;
 		// this.land.tilePosition.y = -this.game.camera.y;
 		this.player.update();
+		// for(var i=0; i<this.playerShots.length; i++) this.playerShots.getAt(i).position = this.playerShots.getAt(i).body.position;
+		// for(var i=0; i<this.enemies.length; i++) this.enemies.getAt(i).position = this.enemies.getAt(i).body.position;
+
+// for(var i=0; i<this.playerShots.length; i++) this.playerShots.getAt(i).body.position = this.playerShots.getAt(i).position;
+// 		for(var i=0; i<this.enemies.length; i++) this.enemies.getAt(i).body.position = this.enemies.getAt(i).position;
+
+
 		// for(var i=0; i<this.enemies.length; i++){
 		// 	if(!this.enemies[i].exists) continue;
 		// 	this.enemies[i].update();

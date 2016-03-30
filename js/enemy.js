@@ -20,7 +20,8 @@ window.Enemy = (function(){
 		// this.sprite = this.game.add.sprite(x, y, 'enemy');
 		// this.sprite.scale.setTo(1.5, 1.5);
     	this.game.physics.arcade.enable(this);
-    	this.anchor.setTo(0.5, 0.5);
+    	// this.anchor.setTo(0.5, 0.5);
+    	// this.pivot.setTo(0.5, 0.5);
     	this.body.collideWorldBounds = true;
     	this.animations.add('enemy', [0,1]);
     	this.play('enemy', 1, true, false);
