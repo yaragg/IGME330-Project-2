@@ -45,7 +45,12 @@ window.Player = (function(){
 			this.nextFire = this.game.time.now + this.fireRate;
 			var shot = this.shots.getFirstExists(false);
 			shot.reset(this.x, this.y);
+			// shot.angle = this.angle;
+			// this.game.physics.arcade.velocityFromAngle(shot.angle - 90, 500, shot.body.velocity);
+			// shot.body.velocity.x += this.body.velocity.x;
 			shot.rotation = this.game.physics.arcade.moveToPointer(shot, 500, this.game.input.activePointer);
+			// this.game.physics.arcade.moveToPointer(shot, 500, this.game.input.activePointer);
+			// shot.x -= Math.sin(shot.rotation)*15;
 			// shot.rotation = this.game.physics.arcade.velocityFromAngle(this.game.physics.arcade.angleToPointer(shot), 500);
 			shot.play('shot', 30, true, false);
 		}

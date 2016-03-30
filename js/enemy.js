@@ -4,11 +4,17 @@ window.Enemy = (function(){
 
 	function Enemy(main, game, player, x, y){
 		Phaser.Sprite.call(this, game, x, y, 'enemy');
+		// var x, y;
+		// do{ //Spawn enemy off camera
+		// 	x = game.world.randomX;
+		// 	y = game.world.randomY;
+		// }while(game.world.camera.view.contains(x, y));
 		this.main = main;
 		// this.shots = shots;
 		// this.game = game;
 		this.player = player;
 		this.speed = 300;
+		this.health = 1;
 		// this.fireRate = 100;
 		// this.nextFire = 0;
 		// this.sprite = this.game.add.sprite(x, y, 'enemy');
@@ -23,10 +29,13 @@ window.Enemy = (function(){
 	Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 	Enemy.prototype.constructor = Enemy;
 
-	Enemy.prototype.update = function(){
-
+	Enemy.prototype.updatey = function(){
         this.game.physics.arcade.moveToObject(this, this.player, this.speed);
 	}
+
+	// Enemy.prototype.damage = function(){
+		
+	// }
 	return Enemy;
 
 }());

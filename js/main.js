@@ -11,6 +11,7 @@ app.main = {
 	playerShots : undefined,
 	enemies : [],
 	keyboard : undefined,
+	enemyRate : 1/60,
 
 	init : function(){
 		this.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -51,6 +52,7 @@ app.main = {
 		// this.playerShots.setAll('checkWorldBounds', true);
 		for(var i=0; i<10; i++){
 			var shot = this.playerShots.create(0, 0, 'shot', [0], false);
+			// var shot = new Phaser.Sprite(this, 0, 0, 'shot', [0]);
 			shot.anchor.setTo(0.5, 0.5);
 			shot.outOfBoundsKill = true;
 			shot.checkWorldBounds = true;
@@ -83,15 +85,47 @@ app.main = {
 		// this.land.tilePosition.y = -this.game.camera.y;
 		this.player.update();
 		// for(var i=0; i<this.enemies.length; i++){
-		// 	// this.enemies[i].update();
-		// 	// this.game.physics.arcade.overlap(this.playerShots, this.enemies[i].sprite);
-		// 	this.game.physics.arcade.collide(this.player, this.enemies[i].sprite);
+		// 	if(!this.enemies[i].exists) continue;
+		// 	this.enemies[i].update();
+			// this.game.physics.arcade.overlap(this.playerShots, this.enemies[i], this.shotHitEnemy);
+		// 	this.game.physics.arcade.collide(this.player, this.enemies[i]);
 		// }
-		this.enemies.callAllExists('update', true);
+
+		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy);
+		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy);
+
+
+		// for(var i=0; i<this.enemies.length; i++){
+		// 	for(var j=0; j<this.playerShots.length; j++){
+		// 		this.game.physics.arcade.collide(this.playerShots.getAt(i), this.enemies.getAt(j), this.shotHitEnemy);
+		// 	}
+		// }
+		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
+		//this.enemies.callAllExists('update', true);
 		this.game.physics.arcade.collide(this.player, this.enemies);
 
+		// if(Math.random() < this.enemyRate){
+		// 			var x, y;
+		// do{ //Spawn enemy off camera
+		// 	x = this.game.world.randomX;
+		// 	y = this.game.world.randomY;
+		// }while(this.game.world.camera.view.contains(x, y));
+		// 	this.enemies.add(new Enemy(this, this.game, this.player, x, y));
+		// 	// var enemy = new Enemy(this, this.game, this.player, x, y);
+		// 	// this.enemies.push(enemy);
+		// 	// this.game.world.add(enemy);
+		// }
+	},
 
+	shotHitEnemy : function(shot, enemy){
+			if(shot.exists && enemy.exists){
+									console.log("Hit");
+					console.log(shot);
+					console.log(enemy);
+					shot.kill(); 
+					enemy.kill();	
+
+			} 
 	}
-
 
 }
