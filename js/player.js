@@ -6,15 +6,11 @@ window.Player = (function(){
 		Phaser.Sprite.call(this, game, x, y, 'player');
 		this.main = main;
 		this.shots = shots;
-		// this.game = game;
 		this.speed = 200;
 		this.fireRate = 100;
 		this.nextFire = 0;
-		// this.sprite = this.game.add.sprite(x, y, 'player');
-		// this.scale.setTo(1.5, 1.5);
     	this.game.physics.arcade.enable(this);
     	this.anchor.setTo(0.5, 0.5);
-    	// this.pivot.setTo(0.5, 0.5);
     	this.body.collideWorldBounds = true;
 	}
 
@@ -25,6 +21,7 @@ window.Player = (function(){
 		this.body.velocity.x = 0;
     	this.body.velocity.y = 0;
 
+    	//Control movement
 		if(this.main.keyboard.left.isDown || this.main.keyboard.a.isDown)
         	this.body.velocity.x = -this.speed;
 		else if (this.main.keyboard.right.isDown || this.main.keyboard.d.isDown)
@@ -42,6 +39,7 @@ window.Player = (function(){
 	}
 
 	Player.prototype.fire = function(){
+		//If ready to fire, recycle shot from pool
 		if(this.game.time.now > this.nextFire && this.shots.countDead() > 0){
 			this.nextFire = this.game.time.now + this.fireRate;
 			this.shots.getFirstExists(false).fire(this.x, this.y);

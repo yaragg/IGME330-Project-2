@@ -36,18 +36,15 @@ app.main = {
 	},
 
 	create : function(){
-
+		//Pause game if window loses focus
 		this.game.onBlur.add(function(){this.pauseGame(true);}, this);
-		// this.game.onFocus.add(function(){this.pauseGame(false);}, this);
-		// this.game.stage.disableVisibilityChange = true;
+
 		//Start world and physics
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		// this.game.world.setBounds(-1000, -1000, 2000, 2000);
 		this.game.world.setBounds(0, 0, 2000, 2000);
 
 		//Create land/background
 		this.land = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'land');
-		// this.land.fixedToCamera = true;
 
     	//Setup keyboard daemon
 		this.keyboard = this.game.input.keyboard.createCursorKeys();
@@ -56,26 +53,11 @@ app.main = {
 		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
 		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
-
 		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 
-		//Creates player shots (fireballs)
+		//Creates player shots (fireballs) pool
 		this.playerShots = this.game.add.group();
-		// this.playerShots.enableBody = true;
-		// this.playerShots.createMultiple(10, 'shot', 0, false);
-		// this.playerShots.setAll('anchor.x', 0.5);
-		// this.playerShots.setAll('anchor.y', 0.5);
-		// this.playerShots.setAll('outOfBoundsKill', true);
-		// this.playerShots.setAll('checkWorldBounds', true);
 		for(var i=0; i<10; i++){
-			// var shot = this.playerShots.create(0, 0, 'shot', [0], false);
-			// // var shot = new Phaser.Sprite(this, 0, 0, 'shot', [0]);
-			// shot.anchor.setTo(0.5, 0.5);
-			// shot.outOfBoundsKill = true;
-			// shot.checkWorldBounds = true;
-	    	// this.game.physics.arcade.enable(shot);
-			// // shot.animations.add('shot', [0, 1, 2, 3, 4, 5, 6, 7]);
-			// shot.animations.add('shot', [32, 33, 34, 35, 36, 37, 38, 39]);
 			this.playerShots.add(new Spell(this, this.game, 0, 0));
 		}
 
@@ -83,102 +65,82 @@ app.main = {
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
 		this.game.world.add(this.player);
 
-		//Create enemy
+		//Create enemy pool
 		this.enemies = this.game.add.group();
-		// for(var i=0; i<1; i++){
-		// 	this.enemies.add(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
-		// }
 
 		//Setup camera
 		this.game.camera.follow(this.player);
-		// this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
-		// this.game.camera.deadzone = new Phaser.Rectangle(175, 175, 450, 250);
 		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
 		this.game.camera.focusOn(this.player);
 
+		//Setup score display
 		this.scoreText = this.createText('Score: 0', this.game.width - 10, 10);
 		this.scoreText.anchor.setTo(1, 0);
+		//Increment score every second
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 
-
+		//Setup game paused text
 		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 54);
 		this.pauseText1.visible = false;
 		this.pauseText1.anchor.setTo(0.5, 0.5);
-
 
 		this.pauseText2 = this.createText('Press \'p\' to unpause', this.game.width/2, this.game.height/2 + 60);
 		this.pauseText2.visible = false;
 		this.pauseText2.anchor.setTo(0.5, 0.5);
 
+		//Setup health bar
 		this.lives = this.game.add.group();
 		for(var i=this.STARTING_LIVES-1; i>=0; i--){
 			this.lives.create(10 + 33*i, 10, 'heart');
 		}
 		this.lives.setAll('fixedToCamera', true);
-
 	},
 
+	//Sets game pause state equal to argument and displays text if paused
 	pauseGame : function(state){
 		this.pauseText1.visible = state;
 		this.pauseText2.visible = state;
 		this.game.paused = state;
 	},
 
+	//Display updated score
 	updateScore : function(){
 		this.scoreText.setText('Score: ' + this.score);
 	},
 
+	//Callback for the one second timer
 	incrementScore : function(){
 		this.score++;
 		this.updateScore();
 	},
 
+	//Main loop
 	update : function(){
-
-		// this.land.tilePosition.x = -this.game.camera.x;
-		// this.land.tilePosition.y = -this.game.camera.y;
 		this.player.update();
-		// for(var i=0; i<this.playerShots.length; i++) this.playerShots.getAt(i).position = this.playerShots.getAt(i).body.position;
-		// for(var i=0; i<this.enemies.length; i++) this.enemies.getAt(i).position = this.enemies.getAt(i).body.position;
 
-// for(var i=0; i<this.playerShots.length; i++) this.playerShots.getAt(i).body.position = this.playerShots.getAt(i).position;
-// 		for(var i=0; i<this.enemies.length; i++) this.enemies.getAt(i).body.position = this.enemies.getAt(i).position;
-
-
-		// for(var i=0; i<this.enemies.length; i++){
-		// 	if(!this.enemies[i].exists) continue;
-		// 	this.enemies[i].update();
-			// this.game.physics.arcade.overlap(this.playerShots, this.enemies[i], this.shotHitEnemy);
-		// 	this.game.physics.arcade.collide(this.player, this.enemies[i]);
-		// }
-
-		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy);
 		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
 
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, null, this);
 
-
-		// for(var i=0; i<this.enemies.length; i++){
-		// 	for(var j=0; j<this.playerShots.length; j++){
-		// 		this.game.physics.arcade.collide(this.playerShots.getAt(i), this.enemies.getAt(j), this.shotHitEnemy);
-		// 	}
-		// }
-		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
-		//this.enemies.callAllExists('update', true);
-		// this.game.physics.arcade.collide(this.player, this.enemies);
-
+		//Decide whether to spawn an enemy
 		if(Math.random() < this.enemyRate){
-			var x, y;
+			this.spawnEnemy();
+		}
+	},
+
+	//Spawns enemy at (x,y) or at a random off-screen position
+	spawnEnemy : function(x, y){
+		if(x && y){
+			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
+		}
+		else{
 			do{ //Spawn enemy off camera
 				x = this.game.world.randomX;
 				y = this.game.world.randomY;
 			}while(this.game.world.camera.view.contains(x, y));
 			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
-			// var enemy = new Enemy(this, this.game, this.player, x, y);
-			// this.enemies.push(enemy);
-			// this.game.world.add(enemy);
 		}
-		// this.scoreText.
+
 	},
 
 	enemyHitPlayer : function(_player, _enemy){
@@ -196,15 +158,10 @@ app.main = {
 	},
 
 	shotHitEnemy : function(_shot, _enemy){
-			// if(_shot.exists && _enemy.exists){
-									console.log("Hit");
-					console.log(_shot);
-					console.log(_enemy);
-					_shot.kill();
-					this.score += 3;
-					this.updateScore();
-					_enemy.kill();	
-			// } 
+		_shot.kill();
+		this.score += 3;
+		this.updateScore();
+		_enemy.kill();	
 	},
 
 	createText : function(string, x, y, size){
