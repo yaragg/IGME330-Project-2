@@ -17,6 +17,8 @@ app.main = {
 	score : 0,
 	scoreText : undefined,
 	pauseText : undefined,
+	gameOverText1 : undefined,
+	gameOverText2 : undefined,
 
 	init : function(){
 		this.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -57,7 +59,7 @@ app.main = {
 
 		//Creates player shots (fireballs) pool
 		this.playerShots = this.game.add.group();
-		for(var i=0; i<10; i++){
+		for(var i=0; i<30; i++){
 			this.playerShots.add(new Spell(this, this.game, 0, 0));
 		}
 
@@ -88,6 +90,14 @@ app.main = {
 		this.pauseText2.visible = false;
 		this.pauseText2.anchor.setTo(0.5, 0.5);
 
+		//Setup game over text
+		this.gameOverText1 = this.createText('Game Over', this.game.width/2, this.game.height/2, 54, null, "red");
+		this.gameOverText1.visible = false;
+		this.gameOverText1.anchor.setTo(0.5, 0.5);
+		this.gameOverText2 = this.createText('Click to restart', this.game.width/2, this.game.height/2 + 60);
+		this.gameOverText2.visible = false;
+		this.gameOverText2.anchor.setTo(0.5, 0.5);
+
 		//Setup health bar
 		this.lives = this.game.add.group();
 		for(var i=this.STARTING_LIVES-1; i>=0; i--){
@@ -96,11 +106,25 @@ app.main = {
 		this.lives.setAll('fixedToCamera', true);
 	},
 
+	resetGame : function(){
+		this.player.reset(this.game.world.centerX, this.game.world.centerY);
+		this.playerShots.callAll('kill');
+		this.enemies.callAll('kill');
+		this.lives.callAll('revive');
+		this.score = 0;
+		this.gameOverText1.visible = false;
+		this.gameOverText2.visible = false;
+		this.game.paused = false;
+		this.updateScore();
+	},
+
 	//Sets game pause state equal to argument and displays text if paused
 	pauseGame : function(state){
-		this.pauseText1.visible = state;
-		this.pauseText2.visible = state;
-		this.game.paused = state;
+		if(state != this.game.paused){
+			this.pauseText1.visible = state;
+			this.pauseText2.visible = state;
+			this.game.paused = state;	
+		}
 	},
 
 	//Display updated score
@@ -152,8 +176,7 @@ app.main = {
 			life.kill();
 		}
 		if(this.lives.countLiving() <= 0){
-			//GAME OVER
-			this.createText('Game Over', this.game.width/2, this.game.height/2);
+			this.gameOver();
 		}
 	},
 
@@ -164,10 +187,17 @@ app.main = {
 		_enemy.kill();	
 	},
 
-	createText : function(string, x, y, size){
+	gameOver : function(){
+		this.gameOverText1.visible = true;
+		this.gameOverText2.visible = true;
+		this.game.input.onDown.addOnce(this.resetGame, this);
+		this.game.paused = true;
+	},
+
+	createText : function(string, x, y, size, font, fill){
 			var text = this.game.add.text(x, y, string);
-			text.font = "Verdana";
-			text.fill = "white";
+			text.font = font || "Verdana";
+			text.fill = fill || "white";
 			text.fontSize = size || 24;
 			text.fixedToCamera = true;
 			return text;
