@@ -12,6 +12,8 @@ app.main = {
 	enemies : [],
 	keyboard : undefined,
 	enemyRate : 1/60,
+	score : 0,
+	scoreText : undefined,
 
 	init : function(){
 		this.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -83,6 +85,20 @@ app.main = {
 		// this.game.camera.deadzone = new Phaser.Rectangle(175, 175, 450, 250);
 		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
 		this.game.camera.focusOn(this.player);
+
+		this.scoreText = this.createText('Score: 0', 10, 10);
+		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
+
+
+	},
+
+	updateScore : function(){
+		this.scoreText.setText('Score: ' + this.score);
+	},
+
+	incrementScore : function(){
+		this.score++;
+		this.updateScore();
 	},
 
 	update : function(){
@@ -105,7 +121,7 @@ app.main = {
 		// }
 
 		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy);
-		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy);
+		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
 
 
 		// for(var i=0; i<this.enemies.length; i++){
@@ -118,16 +134,17 @@ app.main = {
 		// this.game.physics.arcade.collide(this.player, this.enemies);
 
 		if(Math.random() < this.enemyRate){
-					var x, y;
-		do{ //Spawn enemy off camera
-			x = this.game.world.randomX;
-			y = this.game.world.randomY;
-		}while(this.game.world.camera.view.contains(x, y));
+			var x, y;
+			do{ //Spawn enemy off camera
+				x = this.game.world.randomX;
+				y = this.game.world.randomY;
+			}while(this.game.world.camera.view.contains(x, y));
 			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
 			// var enemy = new Enemy(this, this.game, this.player, x, y);
 			// this.enemies.push(enemy);
 			// this.game.world.add(enemy);
 		}
+		// this.scoreText.
 	},
 
 	shotHitEnemy : function(shot, enemy){
@@ -135,10 +152,20 @@ app.main = {
 									console.log("Hit");
 					console.log(shot);
 					console.log(enemy);
-					shot.kill(); 
+					shot.kill();
+					this.score += 3;
+					this.updateScore();
 					enemy.kill();	
-
 			} 
+	},
+
+	createText : function(string, x, y){
+			var text = this.game.add.text(x, y, string);
+			text.font = "Verdana";
+			text.fill = "white";
+			text.fontSize = 24;
+			text.fixedToCamera = true;
+			return text;
 	}
 
 }
