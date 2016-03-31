@@ -10,6 +10,8 @@ app.main = {
 	player : undefined,
 	playerShots : undefined,
 	enemies : [],
+	lives : undefined,
+	STARTING_LIVES : 3,
 	keyboard : undefined,
 	enemyRate : 1/60,
 	score : 0,
@@ -26,6 +28,7 @@ app.main = {
 		this.game.load.image('fire1s', 'images/fire1s.png');
 		this.game.load.image('fire2', 'images/fire2.png');
 		this.game.load.image('fire3', 'images/fire3.png');
+		this.game.load.image('heart', 'images/heart.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
@@ -82,9 +85,9 @@ app.main = {
 
 		//Create enemy
 		this.enemies = this.game.add.group();
-		for(var i=0; i<1; i++){
-			this.enemies.add(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
-		}
+		// for(var i=0; i<1; i++){
+		// 	this.enemies.add(new Enemy(this, this.game, this.player, this.game.world.centerX-50, this.game.world.centerY-50));
+		// }
 
 		//Setup camera
 		this.game.camera.follow(this.player);
@@ -93,7 +96,8 @@ app.main = {
 		this.game.camera.deadzone = new Phaser.Rectangle(200, 200, 400, 200);
 		this.game.camera.focusOn(this.player);
 
-		this.scoreText = this.createText('Score: 0', 10, 10);
+		this.scoreText = this.createText('Score: 0', this.game.width - 10, 10);
+		this.scoreText.anchor.setTo(1, 0);
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 
 
@@ -105,6 +109,12 @@ app.main = {
 		this.pauseText2 = this.createText('Press \'p\' to unpause', this.game.width/2, this.game.height/2 + 60);
 		this.pauseText2.visible = false;
 		this.pauseText2.anchor.setTo(0.5, 0.5);
+
+		this.lives = this.game.add.group();
+		for(var i=this.STARTING_LIVES-1; i>=0; i--){
+			this.lives.create(10 + 33*i, 10, 'heart');
+		}
+		this.lives.setAll('fixedToCamera', true);
 
 	},
 
@@ -145,6 +155,8 @@ app.main = {
 		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy);
 		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
 
+		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, null, this);
+
 
 		// for(var i=0; i<this.enemies.length; i++){
 		// 	for(var j=0; j<this.playerShots.length; j++){
@@ -169,16 +181,30 @@ app.main = {
 		// this.scoreText.
 	},
 
-	shotHitEnemy : function(shot, enemy){
-			if(shot.exists && enemy.exists){
+	enemyHitPlayer : function(_player, _enemy){
+		_enemy.kill();
+		this.score += 3;
+		this.updateScore();
+		var life = this.lives.getFirstAlive();
+		if(life){
+			life.kill();
+		}
+		if(this.lives.countLiving() <= 0){
+			//GAME OVER
+			this.createText('Game Over', this.game.width/2, this.game.height/2);
+		}
+	},
+
+	shotHitEnemy : function(_shot, _enemy){
+			// if(_shot.exists && _enemy.exists){
 									console.log("Hit");
-					console.log(shot);
-					console.log(enemy);
-					shot.kill();
+					console.log(_shot);
+					console.log(_enemy);
+					_shot.kill();
 					this.score += 3;
 					this.updateScore();
-					enemy.kill();	
-			} 
+					_enemy.kill();	
+			// } 
 	},
 
 	createText : function(string, x, y, size){
