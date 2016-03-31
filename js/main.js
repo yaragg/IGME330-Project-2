@@ -19,7 +19,12 @@ app.main = {
 
 	preload : function(){
 		this.game.load.image('player', 'images/wizard.png');
+		this.game.load.image('fire1', 'images/fire1.png');
+		this.game.load.image('fire1s', 'images/fire1s.png');
+		this.game.load.image('fire2', 'images/fire2.png');
+		this.game.load.image('fire3', 'images/fire3.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
+	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
 	    this.game.load.spritesheet('shot', 'images/fireball.png', 63, 18);
 	},
@@ -50,7 +55,7 @@ app.main = {
 		// this.playerShots.setAll('anchor.y', 0.5);
 		// this.playerShots.setAll('outOfBoundsKill', true);
 		// this.playerShots.setAll('checkWorldBounds', true);
-		for(var i=0; i<1; i++){
+		for(var i=0; i<10; i++){
 			// var shot = this.playerShots.create(0, 0, 'shot', [0], false);
 			// // var shot = new Phaser.Sprite(this, 0, 0, 'shot', [0]);
 			// shot.anchor.setTo(0.5, 0.5);
@@ -110,19 +115,19 @@ app.main = {
 		// }
 		// this.game.physics.arcade.collide(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
 		//this.enemies.callAllExists('update', true);
-		this.game.physics.arcade.collide(this.player, this.enemies);
+		// this.game.physics.arcade.collide(this.player, this.enemies);
 
-		// if(Math.random() < this.enemyRate){
-		// 			var x, y;
-		// do{ //Spawn enemy off camera
-		// 	x = this.game.world.randomX;
-		// 	y = this.game.world.randomY;
-		// }while(this.game.world.camera.view.contains(x, y));
-		// 	this.enemies.add(new Enemy(this, this.game, this.player, x, y));
-		// 	// var enemy = new Enemy(this, this.game, this.player, x, y);
-		// 	// this.enemies.push(enemy);
-		// 	// this.game.world.add(enemy);
-		// }
+		if(Math.random() < this.enemyRate){
+					var x, y;
+		do{ //Spawn enemy off camera
+			x = this.game.world.randomX;
+			y = this.game.world.randomY;
+		}while(this.game.world.camera.view.contains(x, y));
+			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
+			// var enemy = new Enemy(this, this.game, this.player, x, y);
+			// this.enemies.push(enemy);
+			// this.game.world.add(enemy);
+		}
 	},
 
 	shotHitEnemy : function(shot, enemy){

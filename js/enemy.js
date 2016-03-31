@@ -13,7 +13,8 @@ window.Enemy = (function(){
 		// this.shots = shots;
 		// this.game = game;
 		this.player = player;
-		this.speed = 300;
+		// this.speed = 300;
+		this.speed = 200;
 		this.health = 1;
 		// this.fireRate = 100;
 		// this.nextFire = 0;
@@ -30,7 +31,7 @@ window.Enemy = (function(){
 	Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 	Enemy.prototype.constructor = Enemy;
 
-	Enemy.prototype.updatey = function(){
+	Enemy.prototype.update = function(){
         this.game.physics.arcade.moveToObject(this, this.player, this.speed);
 	}
 
