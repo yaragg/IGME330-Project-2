@@ -71,6 +71,9 @@ app.main = {
 
 		//Create enemy pool
 		this.enemies = this.game.add.group();
+		for(var i=0; i<50; i++){
+			this.enemies.add(new Enemy(this, this.game, this.player, 0, 0));
+		}
 
 		//Setup camera
 		this.game.camera.follow(this.player);
@@ -107,6 +110,7 @@ app.main = {
 		}
 		this.lives.setAll('fixedToCamera', true);
 
+		//Setup title menu
 		this.titleMenu = this.game.add.sprite(0, 0, 'title');
 		this.titleMenu.fixedToCamera = true;
 		this.game.input.onDown.addOnce(function(){ this.titleMenu.visible = false; this.game.paused = false;}, this);
@@ -162,17 +166,15 @@ app.main = {
 
 	//Spawns enemy at (x,y) or at a random off-screen position
 	spawnEnemy : function(x, y){
-		if(x && y){
-			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
-		}
-		else{
+		if(this.enemies.countDead() <= 0) return;
+		if(!(x && y)){
 			do{ //Spawn enemy off camera
 				x = this.game.world.randomX;
 				y = this.game.world.randomY;
 			}while(this.game.world.camera.view.contains(x, y));
-			this.enemies.add(new Enemy(this, this.game, this.player, x, y));
 		}
-
+		var enemy = this.enemies.getFirstDead();
+		enemy.reset(x, y);
 	},
 
 	enemyHitPlayer : function(_player, _enemy){

@@ -12,6 +12,7 @@ window.Enemy = (function(){
     	this.body.collideWorldBounds = true;
     	this.animations.add('enemy', [0,1]);
     	this.play('enemy', 1, true, false);
+    	this.kill();
 	}
 
 	Enemy.prototype = Object.create(Phaser.Sprite.prototype);
