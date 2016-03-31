@@ -19,9 +19,10 @@ app.main = {
 	pauseText : undefined,
 	gameOverText1 : undefined,
 	gameOverText2 : undefined,
+	titleMenu : undefined,
 
 	init : function(){
-		this.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
+		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
 	},
 
 	preload : function(){
@@ -31,6 +32,7 @@ app.main = {
 		this.game.load.image('fire2', 'images/fire2.png');
 		this.game.load.image('fire3', 'images/fire3.png');
 		this.game.load.image('heart', 'images/heart.png');
+		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
@@ -104,10 +106,16 @@ app.main = {
 			this.lives.create(10 + 33*i, 10, 'heart');
 		}
 		this.lives.setAll('fixedToCamera', true);
+
+		this.titleMenu = this.game.add.sprite(0, 0, 'title');
+		this.titleMenu.fixedToCamera = true;
+		this.game.input.onDown.addOnce(function(){ this.titleMenu.visible = false; this.game.paused = false;}, this);
+		this.game.paused = true;
 	},
 
 	resetGame : function(){
 		this.player.reset(this.game.world.centerX, this.game.world.centerY);
+		this.game.camera.focusOn(this.player);
 		this.playerShots.callAll('kill');
 		this.enemies.callAll('kill');
 		this.lives.callAll('revive');
