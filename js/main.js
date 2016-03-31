@@ -14,6 +14,7 @@ app.main = {
 	enemyRate : 1/60,
 	score : 0,
 	scoreText : undefined,
+	pauseText : undefined,
 
 	init : function(){
 		this.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -33,6 +34,9 @@ app.main = {
 
 	create : function(){
 
+		this.game.onBlur.add(function(){this.pauseGame(true);}, this);
+		// this.game.onFocus.add(function(){this.pauseGame(false);}, this);
+		// this.game.stage.disableVisibilityChange = true;
 		//Start world and physics
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		// this.game.world.setBounds(-1000, -1000, 2000, 2000);
@@ -48,6 +52,9 @@ app.main = {
 		this.keyboard.a = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
+
+		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 
 		//Creates player shots (fireballs)
 		this.playerShots = this.game.add.group();
@@ -90,6 +97,21 @@ app.main = {
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 
 
+		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 54);
+		this.pauseText1.visible = false;
+		this.pauseText1.anchor.setTo(0.5, 0.5);
+
+
+		this.pauseText2 = this.createText('Press \'p\' to unpause', this.game.width/2, this.game.height/2 + 60);
+		this.pauseText2.visible = false;
+		this.pauseText2.anchor.setTo(0.5, 0.5);
+
+	},
+
+	pauseGame : function(state){
+		this.pauseText1.visible = state;
+		this.pauseText2.visible = state;
+		this.game.paused = state;
 	},
 
 	updateScore : function(){
@@ -159,11 +181,11 @@ app.main = {
 			} 
 	},
 
-	createText : function(string, x, y){
+	createText : function(string, x, y, size){
 			var text = this.game.add.text(x, y, string);
 			text.font = "Verdana";
 			text.fill = "white";
-			text.fontSize = 24;
+			text.fontSize = size || 24;
 			text.fixedToCamera = true;
 			return text;
 	}
