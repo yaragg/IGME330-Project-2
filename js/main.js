@@ -36,7 +36,6 @@ app.main = {
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
-	    this.game.load.spritesheet('shot', 'images/fireball.png', 63, 18);
 	},
 
 	create : function(){
