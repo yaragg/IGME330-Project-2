@@ -32,6 +32,9 @@ app.main = {
 		this.game.load.image('fire2', 'images/fire2.png');
 		this.game.load.image('fire3', 'images/fire3.png');
 		this.game.load.image('heart', 'images/heart.png');
+		this.game.load.image('manaBar', 'images/manaBar.png');
+		this.game.load.image('manaBar_empty', 'images/manaBar_empty.png');
+		this.game.load.image('manaBar_consume', 'images/manaBar_consume.png');
 		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);

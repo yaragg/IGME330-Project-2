@@ -12,6 +12,9 @@ window.Player = (function(){
     	this.game.physics.arcade.enable(this);
     	this.anchor.setTo(0.5, 0.5);
     	this.body.collideWorldBounds = true;
+    	// this.manaBar = new Bar(game, 10, 100, 100, 50, 10, "rgba(97, 170, 255, 0.65)", "#f84d4d", "#1414ff");
+    	this.manaBar = new Bar(game, 10, 100, 100, 50, 10, "#000", "#F00", "#00F");
+
 	}
 
 	Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -43,6 +46,7 @@ window.Player = (function(){
 		if(this.game.time.now > this.nextFire && this.shots.countDead() > 0){
 			this.nextFire = this.game.time.now + this.fireRate;
 			this.shots.getFirstExists(false).fire(this.x, this.y);
+			this.manaBar.updateValue(-10);
 
 		}
 	}

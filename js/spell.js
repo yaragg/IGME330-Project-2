@@ -54,13 +54,15 @@ window.Spell = (function(){
 		this.emitter.start(false, 3000, 5);
 
 	}
-	Spell.prototype.Update = function(){
+	Spell.prototype.update = function(){
 		// this.emitter.minParticleSpeed = new Phaser.Point(50,50);
 		// this.emitter.maxParticleSpeed = new Phaser.Point(100,50);
-		var vel = this.game.physics.arcade.velocityFromRotation(this.rotation, 500) + this.position;
+		// var vel = this.game.physics.arcade.velocityFromRotation(this.rotation, 500) + this.position;
+
 		// var vel = this.game.physics.arcade.velocityFromRotation(this.body.rotation, 500) + this.body.position;
-		// this.emitter.setXSpeed(-vel.x*20, -vel.x*30);
-		// this.emitter.setYSpeed(-vel.y*20, -vel.y*30);
+		var vel = this.body.velocity;
+		this.emitter.setXSpeed(-vel.x*20, -vel.x*30);
+		this.emitter.setYSpeed(-vel.y*20, -vel.y*30);
 
 		// this.emitter.setXSpeed(-vel.x, -vel.x*2);
 		// this.emitter.setYSpeed(-vel.y, -vel.y*2);
