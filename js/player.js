@@ -7,8 +7,9 @@ window.Player = (function(){
 		this.main = main;
 		this.shots = shots;
 		this.speed = 200;
-		this.fireRate = 100;
-		this.nextFire = 0;
+		this.rightSpell;
+		this.magicDart = new MagicDart(this.main, this.game);
+		this.leftSpell = this.magicDart;
 		this.maxMana = 100;
 		this.manaRegenRate = 2;
 		this.mana = this.maxMana;
@@ -39,17 +40,19 @@ window.Player = (function(){
         this.rotation = Math.PI/2 + this.game.physics.arcade.angleToPointer(this);
 
         if(this.game.input.activePointer.isDown){
-        	this.fire();
+        	this.fire(this.leftSpell);
         }
+
+        this.leftSpell.update();
 	}
 
-	Player.prototype.fire = function(){
+	Player.prototype.fire = function(spell){
 		//If ready to fire, recycle shot from pool
-		if(this.mana >= 10 && this.game.time.now > this.nextFire && this.shots.countDead() > 0){
-			this.nextFire = this.game.time.now + this.fireRate;
-			this.shots.getFirstExists(false).fire(this.x, this.y);
+		if(this.mana >= spell.cost){
+			// this.nextFire = this.game.time.now + this.fireRate;
+			// this.shots.getFirstExists(false).fire(this.x, this.y);
 			// this.manaBar.updateValue(-10);
-			this.updateMana(-10);
+			this.updateMana(-spell.fire());
 
 		}
 	}
@@ -58,6 +61,10 @@ window.Player = (function(){
 		this.mana += value;
 		if(this.mana > this.maxMana) this.mana = this.maxMana;
 		this.manaBar.updateValue(this.mana);
+	}
+
+	Player.prototype.resetGame = function(){
+		this.magicDart.resetGame();
 	}
 
 	return Player;

@@ -65,10 +65,10 @@ app.main = {
 		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 
 		//Creates player shots (fireballs) pool
-		this.playerShots = this.game.add.group();
-		for(var i=0; i<30; i++){
-			this.playerShots.add(new Spell(this, this.game, 0, 0));
-		}
+		// this.playerShots = this.game.add.group();
+		// for(var i=0; i<30; i++){
+			// this.playerShots.add(new Spell(this, this.game, 0, 0));
+		// }
 
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
@@ -132,8 +132,9 @@ app.main = {
 
 	resetGame : function(){
 		this.player.reset(this.game.world.centerX, this.game.world.centerY);
+		this.player.resetGame();
 		this.game.camera.focusOn(this.player);
-		this.playerShots.callAll('kill');
+		// this.playerShots.callAll('kill');
 		this.enemies.callAll('kill');
 		this.manaPickups.callAll('kill');
 		this.lives.callAll('revive');
@@ -169,7 +170,8 @@ app.main = {
 	update : function(){
 		this.player.update();
 
-		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, this.isEnemyDead, this);
+		// this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, this.isEnemyDead, this);
+		// this.player.
 
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, this.isEnemyDead, this);
 
