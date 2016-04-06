@@ -9,6 +9,9 @@ window.Player = (function(){
 		this.speed = 200;
 		this.fireRate = 100;
 		this.nextFire = 0;
+		this.maxMana = 100;
+		this.manaRegenRate = 2;
+		this.mana = this.maxMana;
     	this.game.physics.arcade.enable(this);
     	this.anchor.setTo(0.5, 0.5);
     	this.body.collideWorldBounds = true;
@@ -42,12 +45,19 @@ window.Player = (function(){
 
 	Player.prototype.fire = function(){
 		//If ready to fire, recycle shot from pool
-		if(this.game.time.now > this.nextFire && this.shots.countDead() > 0){
+		if(this.mana >= 10 && this.game.time.now > this.nextFire && this.shots.countDead() > 0){
 			this.nextFire = this.game.time.now + this.fireRate;
 			this.shots.getFirstExists(false).fire(this.x, this.y);
-			this.manaBar.updateValue(-10);
+			// this.manaBar.updateValue(-10);
+			this.updateMana(-10);
 
 		}
+	}
+
+	Player.prototype.updateMana = function(value){
+		this.mana += value;
+		if(this.mana > this.maxMana) this.mana = this.maxMana;
+		this.manaBar.updateValue(this.mana);
 	}
 
 	return Player;

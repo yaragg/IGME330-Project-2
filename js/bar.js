@@ -7,7 +7,7 @@ window.Bar = (function(){
 		this.x = x;
 		this.y = y;
 		this.game = game;
-		this.current = 100;
+		// this.current = 100;
 		// this.main = main;
 		this.barBg = this.game.add.sprite(x, y, 'manaBar_empty');
 		this.barConsume = this.game.add.sprite(x, y, 'manaBar_consume');
@@ -28,11 +28,11 @@ window.Bar = (function(){
 	// Bar.prototype.constructor = Bar;
 
 	Bar.prototype.updateValue = function(value){
-		this.current += value;
+		// this.current += value;
 		if(this.tweenFill && this.tweenFill.isRunning) this.tweenFill.stop();
-		this.tweenFill = this.game.add.tween(this.barFill).to({width: this.current}, 100, "Linear", true);
+		this.tweenFill = this.game.add.tween(this.barFill).to({width: value}, 100, "Linear", true);
 		if(this.tweenConsume && this.tweenConsume.isRunning) this.tweenConsume.stop();
-		this.tweenConsume = this.game.add.tween(this.barConsume).to({width: this.current}, 500, "Linear", true, 500);
+		this.tweenConsume = this.game.add.tween(this.barConsume).to({width: value}, 500, "Linear", true, 500);
 	}
 	return Bar;
 

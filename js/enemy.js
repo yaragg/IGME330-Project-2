@@ -8,6 +8,7 @@ window.Enemy = (function(){
 		this.player = player;
 		this.speed = 200;
 		this.health = 1;
+		this.pickupRate = 0.2;
     	this.game.physics.arcade.enable(this);
     	this.body.collideWorldBounds = true;
     	this.animations.add('enemy', [0,1]);
@@ -27,7 +28,12 @@ window.Enemy = (function(){
 	Enemy.prototype.fadeout = function(){
 		this.alive = false; //Stop it from moving
 		//Kills the sprite after it finishes fading out
-		this.game.add.tween(this).to({alpha: 0}, 500, "Linear", true).onComplete.add(this.kill, this);
+		this.game.add.tween(this).to({alpha: 0}, 500, "Linear", true).onComplete.add(this.defeat, this);
+	}
+
+	Enemy.prototype.defeat = function(){
+		this.kill();
+		if(Math.random() < this.pickupRate) this.main.spawnPickup(this.position.x, this.position.y);
 	}
 
 	return Enemy;

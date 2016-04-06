@@ -14,6 +14,8 @@ app.main = {
 	STARTING_LIVES : 3,
 	keyboard : undefined,
 	enemyRate : 1/60,
+	manaSpawnRate : 1/80,
+	pickupLifespan : 10000, //10 seconds
 	score : 0,
 	scoreText : undefined,
 	pauseText : undefined,
@@ -35,6 +37,7 @@ app.main = {
 		this.game.load.image('manaBar', 'images/manaBar.png');
 		this.game.load.image('manaBar_empty', 'images/manaBar_empty.png');
 		this.game.load.image('manaBar_consume', 'images/manaBar_consume.png');
+		this.game.load.image('manaPickup', 'images/manaPickup.png');
 		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
@@ -71,11 +74,19 @@ app.main = {
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
 		this.game.world.add(this.player);
 
+		//Setups player mana regeneration
+		this.game.time.events.loop(Phaser.Timer.SECOND, function(){ this.player.updateMana(this.player.manaRegenRate);}, this);
+
 		//Create enemy pool
 		this.enemies = this.game.add.group();
 		for(var i=0; i<50; i++){
 			this.enemies.add(new Enemy(this, this.game, this.player, 0, 0));
 		}
+
+		this.manaPickups = this.game.add.group();
+		this.manaPickups.enableBody = true;
+		this.manaPickups.createMultiple(20, 'manaPickup');
+		this.manaPickups.callAll('kill');
 
 		//Setup camera
 		this.game.camera.follow(this.player);
@@ -124,8 +135,10 @@ app.main = {
 		this.game.camera.focusOn(this.player);
 		this.playerShots.callAll('kill');
 		this.enemies.callAll('kill');
+		this.manaPickups.callAll('kill');
 		this.lives.callAll('revive');
 		this.score = 0;
+		this.player.mana = this.player.maxMana;
 		this.gameOverText1.visible = false;
 		this.gameOverText2.visible = false;
 		this.game.paused = false;
@@ -160,9 +173,15 @@ app.main = {
 
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, this.isEnemyDead, this);
 
+		this.game.physics.arcade.overlap(this.player, this.manaPickups, this.playerPickedMana, null, this);
+
 		//Decide whether to spawn an enemy
 		if(Math.random() < this.enemyRate){
 			this.spawnEnemy();
+		}
+
+		if(Math.random() < this.manaSpawnRate){
+			this.spawnPickup();
 		}
 	},
 
@@ -178,6 +197,20 @@ app.main = {
 		var enemy = this.enemies.getFirstDead();
 		enemy.alpha = 1;
 		enemy.reset(x, y);
+	},
+
+	spawnPickup : function(x, y){
+		if(this.manaPickups.countDead() <= 0) return;
+		if(!(x && y)){
+			// do{ //Spawn enemy off camera
+				x = this.game.world.randomX;
+				y = this.game.world.randomY;
+			// }while(this.game.world.camera.view.contains(x, y));
+		}
+		var pickup = this.manaPickups.getFirstDead();
+		// pickup.alpha = 1;
+		pickup.reset(x, y);
+		pickup.lifespan = this.pickupLifespan;
 	},
 
 	isEnemyDead : function(_player, _enemy){
@@ -203,6 +236,11 @@ app.main = {
 		this.score += 3;
 		this.updateScore();
 		// _enemy.kill();	
+	},
+
+	playerPickedMana : function(_player, _manaPickup){
+		_manaPickup.kill();
+		this.player.updateMana(10);
 	},
 
 	gameOver : function(){
