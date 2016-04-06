@@ -20,7 +20,14 @@ window.Enemy = (function(){
 
 	Enemy.prototype.update = function(){
 		//Move towards player
-        this.game.physics.arcade.moveToObject(this, this.player, this.speed);
+        if(this.alive) this.game.physics.arcade.moveToObject(this, this.player, this.speed);
+        else this.body.velocity = new Phaser.Point(0, 0);
+	}
+
+	Enemy.prototype.fadeout = function(){
+		this.alive = false; //Stop it from moving
+		//Kills the sprite after it finishes fading out
+		this.game.add.tween(this).to({alpha: 0}, 500, "Linear", true).onComplete.add(this.kill, this);
 	}
 
 	return Enemy;

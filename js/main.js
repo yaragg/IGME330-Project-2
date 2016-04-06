@@ -156,9 +156,9 @@ app.main = {
 	update : function(){
 		this.player.update();
 
-		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, null, this);
+		this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, this.isEnemyDead, this);
 
-		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, null, this);
+		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, this.isEnemyDead, this);
 
 		//Decide whether to spawn an enemy
 		if(Math.random() < this.enemyRate){
@@ -176,7 +176,12 @@ app.main = {
 			}while(this.game.world.camera.view.contains(x, y));
 		}
 		var enemy = this.enemies.getFirstDead();
+		enemy.alpha = 1;
 		enemy.reset(x, y);
+	},
+
+	isEnemyDead : function(_player, _enemy){
+		return _enemy.alive;
 	},
 
 	enemyHitPlayer : function(_player, _enemy){
@@ -193,10 +198,11 @@ app.main = {
 	},
 
 	shotHitEnemy : function(_shot, _enemy){
+		_enemy.fadeout();
 		_shot.kill();
 		this.score += 3;
 		this.updateScore();
-		_enemy.kill();	
+		// _enemy.kill();	
 	},
 
 	gameOver : function(){
