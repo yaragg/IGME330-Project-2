@@ -36,6 +36,10 @@ window.Player = (function(){
         	this.body.velocity.y = -this.speed;
         else if (this.main.keyboard.down.isDown || this.main.keyboard.s.isDown)
         	this.body.velocity.y = this.speed;
+        if(this.main.keyboard.shift.isDown){
+        	this.body.velocity.x *= 1.6;
+        	this.body.velocity.y *= 1.6;
+        }
 
         this.rotation = Math.PI/2 + this.game.physics.arcade.angleToPointer(this);
 

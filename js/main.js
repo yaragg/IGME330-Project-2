@@ -57,12 +57,13 @@ app.main = {
 
     	//Setup keyboard daemon
 		this.keyboard = this.game.input.keyboard.createCursorKeys();
-		this.keyboard.w = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-		this.keyboard.a = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.Keyboard.P);
+		this.keyboard.w = this.game.input.keyboard.addKey(Phaser.KeyCode.W);
+		this.keyboard.a = this.game.input.keyboard.addKey(Phaser.KeyCode.A);
+		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
+		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.KeyCode.D);
+		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
 		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
+		this.keyboard.shift = this.game.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
 		//Creates player shots (fireballs) pool
 		// this.playerShots = this.game.add.group();
