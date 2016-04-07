@@ -1,9 +1,9 @@
 # IGME330-Project-2
 A top down shooter with magic, for Rich Media Web App Development class. Made with the Phaser framework.
 
-*Credits*
+##Credits
 
-*Tutorials and examples:*
+**Tutorials and examples:**
 
 [http://phaser.io/examples/v2/camera/deadzone](http://phaser.io/examples/v2/camera/deadzone)
 
@@ -15,7 +15,7 @@ A top down shooter with magic, for Rich Media Web App Development class. Made wi
   
   
 
-*Images*
+**Images**
 
 Wizard by [Xarius](http://opengameart.org/content/topdown-wizard)
 
