@@ -48,6 +48,8 @@ app.main = {
 		//Pause game if window loses focus
 		this.game.onBlur.add(function(){this.pauseGame(true);}, this);
 
+		this.game.input.mouse.capture = true;
+
 		//Start world and physics
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.world.setBounds(0, 0, 2000, 2000);

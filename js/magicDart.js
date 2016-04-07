@@ -8,7 +8,7 @@ window.MagicDart = (function(){
 
 		this.fireRate = 150;
 		this.nextFire = 0;
-		this.cost = 10;
+		this.cost = 7;
 		this.speed = 500;
 
 		this.main = main;

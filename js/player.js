@@ -7,9 +7,10 @@ window.Player = (function(){
 		this.main = main;
 		this.shots = shots;
 		this.speed = 200;
-		this.rightSpell;
 		this.magicDart = new MagicDart(this.main, this.game);
+		this.mindBlast = new MindBlast(this.main, this.game);
 		this.leftSpell = this.magicDart;
+		this.rightSpell = this.mindBlast;
 		this.maxMana = 100;
 		this.manaRegenRate = 2;
 		this.mana = this.maxMana;
@@ -43,11 +44,16 @@ window.Player = (function(){
 
         this.rotation = Math.PI/2 + this.game.physics.arcade.angleToPointer(this);
 
-        if(this.game.input.activePointer.isDown){
+        if(this.game.input.activePointer.leftButton.isDown){
         	this.fire(this.leftSpell);
+        }
+        if(this.game.input.activePointer.rightButton.isDown){
+        	this.fire(this.rightSpell);
+        	// console.log("right");
         }
 
         this.leftSpell.update();
+        this.rightSpell.update();
 	}
 
 	Player.prototype.fire = function(spell){

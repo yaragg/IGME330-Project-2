@@ -5,3 +5,7 @@ window.onload = function(){
 	console.log("window.onload called");
 	app.main.init();
 }
+
+document.oncontextmenu = function(){
+	return false;
+}
