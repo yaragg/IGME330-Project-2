@@ -40,11 +40,19 @@ app.main = {
 		this.game.load.image('manaPickup', 'images/manaPickup.png');
 		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
-	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
-	    this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
-	    this.game.load.audio('gameplay', ['media/The Realm of Battle (Conquer).mp3', 'media/The Realm of Battle (Conquer).ogg']);
-	    this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
+	    // this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
+	    this.game.load.audio('gameplay', 'media/The Realm of Battle (Conquer).mp3');
+	    this.game.load.audio('magicDart', 'media/magicDart.mp3');
+	    this.game.load.audio('mindBlast', 'media/mindBlast.mp3');
+	    this.game.load.audio('magicFail', 'media/magicFail.mp3');
+	    this.game.load.audio('blobDefeat', 'media/blobDefeat.mp3');
+	    this.game.load.audio('manaPickup', 'media/manaPickup.mp3');
+	    this.game.load.audio('damage', 'media/damage.mp3');
+	    this.game.load.audio('death', 'media/death.mp3');
+
+
+	    // this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
 
 
 	    //Force the game to load the webfonts earlier
@@ -58,11 +66,17 @@ app.main = {
 
 		this.game.input.mouse.capture = true;
 
-		this.titleSong = this.game.add.audio('title');
+		//Add BGM and SFX
+		// this.titleSong = this.game.add.audio('title');
+		this.blobSound = this.game.add.audio('blobDefeat');
+		this.playerDamage = this.game.add.audio('damage');
+		this.playerDeath = this.game.add.audio('death');
+		this.manaSound = this.game.add.audio('manaPickup');
 		this.gameplaySong = this.game.add.audio('gameplay');
-		this.gameoverSong = this.game.add.audio('gameover');
 
-		this.titleSong.loopFull();
+		// this.gameoverSong = this.game.add.audio('gameover');
+
+		this.gameplaySong.loopFull(0.3);
 
 
 		//Start world and physics
@@ -143,6 +157,7 @@ app.main = {
 	},
 
 	resetGame : function(){
+		this.gameplaySong.loopFull();
 		this.player.reset(this.game.world.centerX, this.game.world.centerY);
 		this.player.resetGame();
 		this.game.camera.focusOn(this.player);
@@ -182,11 +197,10 @@ app.main = {
 	update : function(){
 		this.player.update();
 
-		// this.game.physics.arcade.overlap(this.playerShots, this.enemies, this.shotHitEnemy, this.isEnemyDead, this);
-		// this.player.
-
+		//Check player and enemy collision
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, this.isEnemyDead, this);
 
+		//Check if player picked up a mana essence
 		this.game.physics.arcade.overlap(this.player, this.manaPickups, this.playerPickedMana, null, this);
 
 		//Decide whether to spawn an enemy
@@ -213,16 +227,14 @@ app.main = {
 		enemy.reset(x, y);
 	},
 
+	//Spawns pickup at (x,y) or at a random position
 	spawnPickup : function(x, y){
 		if(this.manaPickups.countDead() <= 0) return;
 		if(!(x && y)){
-			// do{ //Spawn enemy off camera
 				x = this.game.world.randomX;
 				y = this.game.world.randomY;
-			// }while(this.game.world.camera.view.contains(x, y));
 		}
 		var pickup = this.manaPickups.getFirstDead();
-		// pickup.alpha = 1;
 		pickup.reset(x, y);
 		pickup.lifespan = this.pickupLifespan;
 	},
@@ -237,9 +249,11 @@ app.main = {
 		this.updateScore();
 		var life = this.lives.getFirstAlive();
 		if(life){
+			this.playerDamage.play();
 			life.kill();
 		}
 		if(this.lives.countLiving() <= 0){
+			this.playerDeath.play();
 			this.gameOver();
 		}
 	},
@@ -253,6 +267,7 @@ app.main = {
 	},
 
 	playerPickedMana : function(_player, _manaPickup){
+		this.manaSound.play();
 		_manaPickup.kill();
 		this.player.updateMana(10);
 	},

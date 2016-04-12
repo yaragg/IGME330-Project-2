@@ -13,6 +13,7 @@ window.MindBlast = (function(){
 
 		this.main = main;
 		this.game = game;
+		this.sound = this.game.add.audio('mindBlast');
 
 		//Create emitter
 		this.emitter = this.game.add.emitter(0, 0, 100);
@@ -31,6 +32,7 @@ window.MindBlast = (function(){
 	MindBlast.prototype.constructor = MindBlast;
 
 	MindBlast.prototype.fireSpell = function(x, y){
+		this.sound.play();
 		this.emitter.x = this.main.player.position.x ;
 		this.emitter.y = this.main.player.position.y ;
 		this.emitter.explode(350, 100);
@@ -43,6 +45,7 @@ window.MindBlast = (function(){
 	}
 
 	MindBlast.prototype.particleHitEnemy = function(_part, _enemy){
+		this.main.blobSound.play();
 		_enemy.fadeout();
 		this.main.score += 3;
 		this.main.updateScore();

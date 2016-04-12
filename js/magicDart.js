@@ -14,6 +14,8 @@ window.MagicDart = (function(){
 		this.main = main;
 		this.game = game;
 
+		this.sound = this.game.add.audio('magicDart');
+
 		//Create shot pool
 		this.shots = this.game.add.group();
 		this.shots.enableBody = true;
@@ -27,6 +29,7 @@ window.MagicDart = (function(){
 	MagicDart.prototype.fireSpell = function(x, y){
 		if(this.shots.countDead() > 0){ //Reuse one of the shots from the pool
 			var shot = this.shots.getFirstDead();
+			this.sound.play();
 			shot.reset(this.main.player.position.x, this.main.player.position.y);
 			shot.rotation = this.game.physics.arcade.moveToPointer(shot, this.speed, this.game.input.activePointer);
 			return this.cost;
@@ -41,6 +44,7 @@ window.MagicDart = (function(){
 	}
 
 	MagicDart.prototype.shotHitEnemy = function(_shot, _enemy){
+		this.main.blobSound.play();
 		_enemy.fadeout();
 		_shot.kill();
 		this.main.score += 3;

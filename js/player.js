@@ -18,6 +18,7 @@ window.Player = (function(){
     	this.anchor.setTo(0.5, 0.5);
     	this.body.collideWorldBounds = true;
     	this.manaBar = new Bar(game, 15, 50);
+    	this.magicFail = this.game.add.audio('magicFail');
 
 	}
 
@@ -64,6 +65,9 @@ window.Player = (function(){
 			// this.manaBar.updateValue(-10);
 			this.updateMana(-spell.fire());
 
+		}
+		else{
+			if(!this.magicFail.isPlaying) this.magicFail.play();
 		}
 	}
 
