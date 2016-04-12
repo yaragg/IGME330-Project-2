@@ -42,6 +42,10 @@ app.main = {
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
+
+	    //Force the game to load the webfonts earlier
+		var temp = this.createText('Temp', this.game.width + 100, 10);
+		temp = this.createText('Temp', this.game.width + 100, 10, 24, "Gondola SD");
 	},
 
 	create : function(){
@@ -67,12 +71,6 @@ app.main = {
 		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 		this.keyboard.shift = this.game.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
-		//Creates player shots (fireballs) pool
-		// this.playerShots = this.game.add.group();
-		// for(var i=0; i<30; i++){
-			// this.playerShots.add(new Spell(this, this.game, 0, 0));
-		// }
-
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
 		this.game.world.add(this.player);
@@ -97,22 +95,22 @@ app.main = {
 		this.game.camera.focusOn(this.player);
 
 		//Setup score display
-		this.scoreText = this.createText('Score: 0', this.game.width - 10, 10);
+		this.scoreText = this.createText('Score: 0', this.game.width - 10, 10, 48);
 		this.scoreText.anchor.setTo(1, 0);
 		//Increment score every second
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 
 		//Setup game paused text
-		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 54);
+		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 60, "Gondola SD");
 		this.pauseText1.visible = false;
 		this.pauseText1.anchor.setTo(0.5, 0.5);
 
-		this.pauseText2 = this.createText('Press \'p\' to unpause', this.game.width/2, this.game.height/2 + 60);
+		this.pauseText2 = this.createText('Press \'p\' to unpause', this.game.width/2, this.game.height/2 + 80);
 		this.pauseText2.visible = false;
 		this.pauseText2.anchor.setTo(0.5, 0.5);
 
 		//Setup game over text
-		this.gameOverText1 = this.createText('Game Over', this.game.width/2, this.game.height/2, 54, null, "red");
+		this.gameOverText1 = this.createText('Game Over', this.game.width/2, this.game.height/2, 68, "Gondola SD", "red");
 		this.gameOverText1.visible = false;
 		this.gameOverText1.anchor.setTo(0.5, 0.5);
 		this.gameOverText2 = this.createText('Click to restart', this.game.width/2, this.game.height/2 + 60);
@@ -257,9 +255,9 @@ app.main = {
 
 	createText : function(string, x, y, size, font, fill){
 			var text = this.game.add.text(x, y, string);
-			text.font = font || "Verdana";
+			text.font = font || "Gothic Ultra";
 			text.fill = fill || "white";
-			text.fontSize = size || 24;
+			text.fontSize = size || 44;
 			text.fixedToCamera = true;
 			return text;
 	}
