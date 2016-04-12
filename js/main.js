@@ -42,6 +42,10 @@ app.main = {
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    // this.game.load.spritesheet('enemy', 'images/slimeb.png', 44, 36);
 	    this.game.load.image('land', 'images/grass.png');
+	    this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
+	    this.game.load.audio('gameplay', ['media/The Realm of Battle (Conquer).mp3', 'media/The Realm of Battle (Conquer).ogg']);
+	    this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
+
 
 	    //Force the game to load the webfonts earlier
 		var temp = this.createText('Temp', this.game.width + 100, 10);
@@ -53,6 +57,13 @@ app.main = {
 		this.game.onBlur.add(function(){this.pauseGame(true);}, this);
 
 		this.game.input.mouse.capture = true;
+
+		this.titleSong = this.game.add.audio('title');
+		this.gameplaySong = this.game.add.audio('gameplay');
+		this.gameoverSong = this.game.add.audio('gameover');
+
+		this.titleSong.loopFull();
+
 
 		//Start world and physics
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
