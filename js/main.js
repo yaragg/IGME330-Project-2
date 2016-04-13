@@ -29,15 +29,15 @@ app.main = {
 
 	preload : function(){
 		this.game.load.image('player', 'images/wizard.png');
-		this.game.load.image('fire1', 'images/fire1.png');
-		this.game.load.image('fire1s', 'images/fire1s.png');
-		this.game.load.image('fire2', 'images/fire2.png');
-		this.game.load.image('fire3', 'images/fire3.png');
+	    this.game.load.spritesheet('magicDart', 'images/magicDart.png', 32, 32);
+		this.game.load.image('mind1', 'images/mind1.png');
+		this.game.load.image('mind2', 'images/mind2.png');
+		this.game.load.image('mind3', 'images/mind3.png');
 		this.game.load.image('heart', 'images/heart.png');
 		this.game.load.image('manaBar', 'images/manaBar.png');
 		this.game.load.image('manaBar_empty', 'images/manaBar_empty.png');
 		this.game.load.image('manaBar_consume', 'images/manaBar_consume.png');
-		this.game.load.image('manaPickup', 'images/manaPickup.png');
+	    this.game.load.spritesheet('manaPickup', 'images/manaPickup.png', 40, 38);
 		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
 	    this.game.load.image('land', 'images/grass.png');
@@ -112,6 +112,8 @@ app.main = {
 		this.manaPickups = this.game.add.group();
 		this.manaPickups.enableBody = true;
 		this.manaPickups.createMultiple(20, 'manaPickup');
+		this.manaPickups.callAll('animations.add', 'animations', 'manaPickup', [0, 1, 2, 3, 4, 5]);
+		this.manaPickups.callAll('play', null, 'manaPickup', 4, true);
 		this.manaPickups.callAll('kill');
 
 		//Setup camera

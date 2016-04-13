@@ -17,7 +17,7 @@ window.MindBlast = (function(){
 
 		//Create emitter
 		this.emitter = this.game.add.emitter(0, 0, 100);
-		this.emitter.makeParticles(['fire1', 'fire2', 'fire3']);
+		this.emitter.makeParticles(['mind1', 'mind2', 'mind3']);
 		this.emitter.gravity = 0;
 		this.emitter.setAlpha(1, 0, 3000);
 		this.emitter.setScale(0.2, 0.5, 0.2, 0.5, 1000);
