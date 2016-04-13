@@ -69,7 +69,6 @@ app.main = {
 		// this.titleSong = this.game.add.audio('title');
 		this.blobSound = this.game.add.audio('blobDefeat');
 		this.playerDamage = this.game.add.audio('damage');
-		this.playerDeath = this.game.add.audio('death');
 		this.manaSound = this.game.add.audio('manaPickup');
 		this.gameplaySong = this.game.add.audio('gameplay');
 
@@ -92,8 +91,11 @@ app.main = {
 		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
 		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.KeyCode.D);
 		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
+		this.keyboard.q = this.game.input.keyboard.addKey(Phaser.KeyCode.Q);
+		this.keyboard.e = this.game.input.keyboard.addKey(Phaser.KeyCode.E);
 		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 		this.keyboard.shift = this.game.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
+		this.keyboard.space = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
@@ -254,7 +256,6 @@ app.main = {
 			life.kill();
 		}
 		if(this.lives.countLiving() <= 0){
-			this.playerDeath.play();
 			this.gameOver();
 		}
 	},

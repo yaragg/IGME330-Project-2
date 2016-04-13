@@ -45,10 +45,10 @@ window.Player = (function(){
 
         this.rotation = Math.PI/2 + this.game.physics.arcade.angleToPointer(this);
 
-        if(this.game.input.activePointer.leftButton.isDown){
+        if(this.game.input.activePointer.leftButton.isDown || this.main.keyboard.space.isDown || this.main.keyboard.e.isDown ){
         	this.fire(this.leftSpell);
         }
-        if(this.game.input.activePointer.rightButton.isDown){
+        if(this.game.input.activePointer.rightButton.isDown || this.main.keyboard.q.isDown){
         	this.fire(this.rightSpell);
         	// console.log("right");
         }
