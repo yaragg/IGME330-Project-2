@@ -17,18 +17,21 @@ A top down shooter with magic, for Rich Media Web App Development class. Made wi
 
 **Images**
 
-Wizard by [Xarius](http://opengameart.org/content/topdown-wizard)
+[Wizard](http://opengameart.org/content/topdown-wizard) by [Xarius](http://opengameart.org/users/xarius), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
 
-Fireball by [Clint Bellanger](http://opengameart.org/content/fireball-spell)
+[Magic dart](http://opengameart.org/content/explosions-0) by [chabull](http://opengameart.org/users/chabull), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/). Modified by adding colors and pasting into a spritesheet.
 
-Slime by [Jerom](http://opengameart.org/content/gloo-enemy)
+[Mana pickup](http://opengameart.org/content/2d-shooter-effects-alpha-version) by [Tatermand](http://opengameart.org/users/tatermand), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/). Modified by adding different brightness levels and rotations.
 
-Grass background by [surfacecurve](http://opengameart.org/content/grass-textureseamless-2d)
+[Slime](http://opengameart.org/content/scifi-creature-tileset-mini-32x32-scifi-creature-icons) by [Stephen Challener (Redshrike)](http://opengameart.org/users/redshrike), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/), hosted by OpenGameArt.org
 
-Heart by [shinzohotoroki](http://opengameart.org/content/heart-3)
+[Grass background](http://opengameart.org/content/grass-textureseamless-2d) by [surfacecurve](http://opengameart.org/users/surfacecurve), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
 
-Mana bar by [Scrittl](http://opengameart.org/content/health-and-manabars-100x12px-200x24px)
+[Heart](http://opengameart.org/content/heart-3) by [shinzohotoroki](http://opengameart.org/users/shinzohotoroki), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
 
+[Mana bar](http://opengameart.org/content/health-and-manabars-100x12px-200x24px) by [Scrittl](http://opengameart.org/users/scrittl), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
+
+  
 
 **Fonts**
 
@@ -47,6 +50,14 @@ The Realm of Battle (Conquer), The Realm of Battle (Regret) and Spanish Theme (C
 
 **Sound effects**
 
-[Magic dart sound](http://opengameart.org/content/magic-missiles) by [spookymodem](http://opengameart.org/users/spookymodem)
+[Magic dart sound](http://opengameart.org/content/magic-missiles) by [spookymodem](http://opengameart.org/users/spookymodem), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
 
-[Other magic sounds](http://opengameart.org/content/spell-sounds-starter-pack) by [p0ss](http://opengameart.org/users/p0ss)
+[Mind blast sound](http://opengameart.org/content/fantasy-sound-effects-library) by [Little Robot Sound Factory](http://opengameart.org/users/little-robot-sound-factory), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
+
+[Mana pickup sound](http://opengameart.org/content/random-sfx) by [Écrivain](http://opengameart.org/users/%C3%A9crivain), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
+
+[Monster death](http://opengameart.org/content/insect-or-alien-scream-short) by [qubodup](http://opengameart.org/users/qubodup), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
+
+[Magic failure](http://opengameart.org/content/rpg-sound-package) by Tuomo Untinen, available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
+
+[Damage sound](http://opengameart.org/content/rpg-sound-pack) by [artisticdude](http://opengameart.org/users/artisticdude), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)

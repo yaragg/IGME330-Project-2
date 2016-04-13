@@ -11,8 +11,8 @@ window.Enemy = (function(){
 		this.pickupRate = 0.2;
     	this.game.physics.arcade.enable(this);
     	this.body.collideWorldBounds = true;
-    	this.animations.add('enemy', [0,1]);
-    	this.play('enemy', 1, true, false);
+    	this.animations.add('enemy', [0,1,2]);
+    	this.play('enemy', 2, true, false);
     	this.kill();
 	}
 

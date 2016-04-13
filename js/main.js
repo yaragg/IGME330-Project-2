@@ -39,7 +39,7 @@ app.main = {
 		this.game.load.image('manaBar_consume', 'images/manaBar_consume.png');
 	    this.game.load.spritesheet('manaPickup', 'images/manaPickup.png', 40, 38);
 		this.game.load.image('title', 'images/title_menu.png');
-	    this.game.load.spritesheet('enemy', 'images/slime.png', 22, 18);
+	    this.game.load.spritesheet('enemy', 'images/slime.png', 26, 22);
 	    this.game.load.image('land', 'images/grass.png');
 	    // this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
 	    this.game.load.audio('gameplay', 'media/The Realm of Battle (Conquer).mp3');
@@ -49,7 +49,6 @@ app.main = {
 	    this.game.load.audio('blobDefeat', 'media/blobDefeat.mp3');
 	    this.game.load.audio('manaPickup', 'media/manaPickup.mp3');
 	    this.game.load.audio('damage', 'media/damage.mp3');
-	    this.game.load.audio('death', 'media/death.mp3');
 
 
 	    // this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
