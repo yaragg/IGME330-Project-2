@@ -9,8 +9,11 @@ window.Player = (function(){
 		this.speed = 200;
 		this.magicDart = new MagicDart(this.main, this.game);
 		this.mindBlast = new MindBlast(this.main, this.game);
+
+		//We use the leftSpell and rightSpell variables to allow the player to swap equipped spells if more are added in the future
 		this.leftSpell = this.magicDart;
 		this.rightSpell = this.mindBlast;
+
 		this.maxMana = 100;
 		this.manaRegenRate = 2;
 		this.mana = this.maxMana;
@@ -50,7 +53,6 @@ window.Player = (function(){
         }
         if(this.game.input.activePointer.rightButton.isDown || this.main.keyboard.q.isDown){
         	this.fire(this.rightSpell);
-        	// console.log("right");
         }
 
         this.leftSpell.update();
@@ -58,11 +60,7 @@ window.Player = (function(){
 	}
 
 	Player.prototype.fire = function(spell){
-		//If ready to fire, recycle shot from pool
-		if(this.mana >= spell.cost){
-			// this.nextFire = this.game.time.now + this.fireRate;
-			// this.shots.getFirstExists(false).fire(this.x, this.y);
-			// this.manaBar.updateValue(-10);
+		if(this.mana >= spell.cost){ //If player has enough mana, cast spell
 			this.updateMana(-spell.fire());
 
 		}

@@ -33,6 +33,7 @@ window.Enemy = (function(){
 
 	Enemy.prototype.defeat = function(){
 		this.kill();
+		//Has a chance at spawning a pickup
 		if(Math.random() < this.pickupRate) this.main.spawnPickup(this.position.x, this.position.y);
 	}
 

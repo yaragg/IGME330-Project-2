@@ -3,12 +3,9 @@
 window.Bar = (function(){
 
 	function Bar(game, x, y){
-		// Phaser.Sprite.call(this, game, x, y);
 		this.x = x;
 		this.y = y;
 		this.game = game;
-		// this.current = 100;
-		// this.main = main;
 		this.barBg = this.game.add.sprite(x, y, 'manaBar_empty');
 		this.barConsume = this.game.add.sprite(x, y, 'manaBar_consume');
 		this.barFill = this.game.add.sprite(x, y, 'manaBar');
@@ -24,11 +21,7 @@ window.Bar = (function(){
 
 	}
 
-	// Bar.prototype = Object.create(Phaser.Sprite.prototype);
-	// Bar.prototype.constructor = Bar;
-
 	Bar.prototype.updateValue = function(value){
-		// this.current += value;
 		if(this.tweenFill && this.tweenFill.isRunning) this.tweenFill.stop();
 		this.tweenFill = this.game.add.tween(this.barFill).to({width: value}, 100, "Linear", true);
 		if(this.tweenConsume && this.tweenConsume.isRunning) this.tweenConsume.stop();

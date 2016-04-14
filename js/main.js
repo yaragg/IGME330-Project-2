@@ -8,12 +8,12 @@ app.main = {
 	height : 600,
 	enemies : [],
 	STARTING_LIVES : 3,
-	enemyRate : 0.5/60,
-	maxEnemyRate : 3/60,
-	enemyRateIncrease : 1/600,
-	lastEnemyRateIncrease : 0,
-	manaSpawnRate : 1/80,
-	pickupLifespan : 10000, //10 seconds
+	enemyRate : 0.5/60, //Current chance an enemy will spawn, per frame
+	maxEnemyRate : 3/60, //Maximum spawning rate
+	enemyRateIncrease : 1/600, //Spawn rate increase
+	lastEnemyRateIncrease : 0, //How high was the score the last time the spawning rate increased?
+	manaSpawnRate : 1/80, //Spawn chance for mana pick ups, per frame
+	pickupLifespan : 10000, //Pickups disappear after 10 seconds
 	score : 0,
 	isGameOver : false,
 
@@ -22,6 +22,7 @@ app.main = {
 	},
 
 	preload : function(){
+		//Load images
 		this.game.load.image('player', 'images/wizard.png');
 	    this.game.load.spritesheet('magicDart', 'images/magicDart.png', 32, 32);
 		this.game.load.image('mind1', 'images/mind1.png');
@@ -35,6 +36,8 @@ app.main = {
 		this.game.load.image('title', 'images/title_menu.png');
 	    this.game.load.spritesheet('enemy', 'images/slime.png', 26, 22);
 	    this.game.load.image('land', 'images/grass.png');
+
+	    //Load BGM and SFX
 	    // this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
 	    this.game.load.audio('gameplay', 'media/The Realm of Battle (Conquer).mp3');
 	    this.game.load.audio('magicDart', 'media/magicDart.mp3');
@@ -43,8 +46,6 @@ app.main = {
 	    this.game.load.audio('blobDefeat', 'media/blobDefeat.mp3');
 	    this.game.load.audio('manaPickup', 'media/manaPickup.mp3');
 	    this.game.load.audio('damage', 'media/damage.mp3');
-
-
 	    // this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
 
 
@@ -65,7 +66,6 @@ app.main = {
 		this.playerDamage = this.game.add.audio('damage');
 		this.manaSound = this.game.add.audio('manaPickup');
 		this.gameplaySong = this.game.add.audio('gameplay');
-
 		// this.gameoverSong = this.game.add.audio('gameover');
 
 		this.gameplaySong.loopFull(0.3);
@@ -85,9 +85,9 @@ app.main = {
 		this.keyboard.s = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
 		this.keyboard.d = this.game.input.keyboard.addKey(Phaser.KeyCode.D);
 		this.keyboard.p = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
+		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 		this.keyboard.q = this.game.input.keyboard.addKey(Phaser.KeyCode.Q);
 		this.keyboard.e = this.game.input.keyboard.addKey(Phaser.KeyCode.E);
-		this.keyboard.p.onDown.add(function(){this.pauseGame(!this.game.paused);}, this);
 		this.keyboard.shift = this.game.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 		this.keyboard.space = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
@@ -104,6 +104,7 @@ app.main = {
 			this.enemies.add(new Enemy(this, this.game, this.player, 0, 0));
 		}
 
+		//Create mana pickup pool
 		this.manaPickups = this.game.add.group();
 		this.manaPickups.enableBody = true;
 		this.manaPickups.createMultiple(20, 'manaPickup');
@@ -122,7 +123,7 @@ app.main = {
 		//Increment score every second
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 
-		//Setup game paused text
+		//Setup texts
 		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 60, "Gondola SD");
 		this.pauseText1.visible = false;
 		this.pauseText1.anchor.setTo(0.5, 0.5);
@@ -166,7 +167,6 @@ app.main = {
 		this.player.reset(this.game.world.centerX, this.game.world.centerY);
 		this.player.resetGame();
 		this.game.camera.focusOn(this.player);
-		// this.playerShots.callAll('kill');
 		this.enemies.callAll('kill');
 		this.manaPickups.callAll('kill');
 		this.lives.callAll('revive');
@@ -190,7 +190,7 @@ app.main = {
 		}
 	},
 
-	//Display updated score
+	//Display updated score and increase enemy rate according to score
 	updateScore : function(){
 		if((this.score - this.lastEnemyRateIncrease)%25==0){
 			this.lastEnemyRateIncrease = this.score;
@@ -222,6 +222,7 @@ app.main = {
 			this.spawnEnemy();
 		}
 
+		//Decide whether to spawn a pickup
 		if(Math.random() < this.manaSpawnRate){
 			this.spawnPickup();
 		}
@@ -276,7 +277,6 @@ app.main = {
 		_shot.kill();
 		this.score += 3;
 		this.updateScore();
-		// _enemy.kill();	
 	},
 
 	playerPickedMana : function(_player, _manaPickup){

@@ -6,10 +6,10 @@ window.MindBlast = (function(){
 	function MindBlast(main, game){
 		Spell.call(this, game);
 
+		//This spell's stats
 		this.fireRate = 300;
 		this.nextFire = 0;
 		this.cost = 20;
-		this.speed = 500;
 
 		this.main = main;
 		this.game = game;
@@ -39,6 +39,7 @@ window.MindBlast = (function(){
 		return this.cost;
 	}
 
+	//Check collisions for each particle
 	MindBlast.prototype.update = function(){
 		this.game.physics.arcade.collide(this.emitter, this.main.enemies, this.particleHitEnemy, this.main.isEnemyDead, this);
 

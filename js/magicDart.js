@@ -6,6 +6,7 @@ window.MagicDart = (function(){
 	function MagicDart(main, game){
 		Spell.call(this, game);
 
+		//This spell's stats
 		this.fireRate = 150;
 		this.nextFire = 0;
 		this.cost = 7;
