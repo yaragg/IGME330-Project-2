@@ -19,7 +19,7 @@ app.main = {
 	isGameOver : true,
 
 	init : function(){
-		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
+		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
 	},
 
 	preload : function(){
