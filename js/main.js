@@ -15,7 +15,7 @@ app.main = {
 	manaSpawnRate : 1/80, //Spawn chance for mana pick ups, per frame
 	pickupLifespan : 10000, //Pickups disappear after 10 seconds
 	score : 0,
-	isGameOver : false,
+	isGameOver : true,
 
 	init : function(){
 		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -38,7 +38,7 @@ app.main = {
 	    this.game.load.image('land', 'images/grass.png');
 
 	    //Load BGM and SFX
-	    // this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
+	    this.game.load.audio('title', ['media/Spanish Theme_edited.mp3', 'media/Spanish Theme_edited.ogg']);
 	    this.game.load.audio('gameplay', 'media/The Realm of Battle (Conquer).mp3');
 	    this.game.load.audio('magicDart', 'media/magicDart.mp3');
 	    this.game.load.audio('mindBlast', 'media/mindBlast.mp3');
@@ -46,7 +46,7 @@ app.main = {
 	    this.game.load.audio('blobDefeat', 'media/blobDefeat.mp3');
 	    this.game.load.audio('manaPickup', 'media/manaPickup.mp3');
 	    this.game.load.audio('damage', 'media/damage.mp3');
-	    // this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
+	    this.game.load.audio('gameover', ['media/The Realm of Battle (Regret)_edited.mp3', 'media/The Realm of Battle (Regret)_edited.ogg']);
 
 
 	    //Force the game to load the webfonts earlier
@@ -61,14 +61,14 @@ app.main = {
 		this.game.input.mouse.capture = true;
 
 		//Add BGM and SFX
-		// this.titleSong = this.game.add.audio('title');
+		this.titleSong = this.game.add.audio('title');
 		this.blobSound = this.game.add.audio('blobDefeat');
 		this.playerDamage = this.game.add.audio('damage');
 		this.manaSound = this.game.add.audio('manaPickup');
 		this.gameplaySong = this.game.add.audio('gameplay');
-		// this.gameoverSong = this.game.add.audio('gameover');
+		this.gameoverSong = this.game.add.audio('gameover');
 
-		this.gameplaySong.loopFull(0.3);
+		this.titleSong.loopFull();
 
 
 		//Start world and physics
@@ -94,9 +94,10 @@ app.main = {
 		//Create player
 		this.player = new Player(this, this.game, this.playerShots, this.game.world.centerX, this.game.world.centerY);
 		this.game.world.add(this.player);
+		this.player.alive = false;
 
 		//Setups player mana regeneration
-		this.game.time.events.loop(Phaser.Timer.SECOND, function(){ this.player.updateMana(this.player.manaRegenRate);}, this);
+		this.game.time.events.loop(Phaser.Timer.SECOND, function(){ if(this.isGameOver) return; this.player.updateMana(this.player.manaRegenRate);}, this);
 
 		//Create enemy pool
 		this.enemies = this.game.add.group();
@@ -158,14 +159,23 @@ app.main = {
 		//Setup title menu
 		this.titleMenu = this.game.add.sprite(0, 0, 'title');
 		this.titleMenu.fixedToCamera = true;
-		this.game.input.onDown.addOnce(function(){ this.titleMenu.visible = false; this.game.paused = false;}, this);
-		this.game.paused = true;
+		this.game.input.onTap.addOnce(this.startGame, this);
+	},
+
+	startGame : function(){
+		this.titleSong.fadeOut(500); 
+		this.gameplaySong.loopFull(); 
+		this.titleMenu.visible = false; 
+		this.player.alive = true; 
+		this.isGameOver = false;
 	},
 
 	resetGame : function(){
+		this.gameoverSong.fadeOut(500);
+		this.gameplaySong.volume = 1;
 		this.gameplaySong.loopFull();
-		this.player.reset(this.game.world.centerX, this.game.world.centerY);
 		this.player.resetGame();
+		this.player.reset(this.game.world.centerX, this.game.world.centerY);
 		this.game.camera.focusOn(this.player);
 		this.enemies.callAll('kill');
 		this.manaPickups.callAll('kill');
@@ -192,6 +202,7 @@ app.main = {
 
 	//Display updated score and increase enemy rate according to score
 	updateScore : function(){
+		if(this.isGameOver) return;
 		if((this.score - this.lastEnemyRateIncrease)%25==0){
 			this.lastEnemyRateIncrease = this.score;
 			this.enemyRate += this.enemyRateIncrease;
@@ -209,7 +220,8 @@ app.main = {
 
 	//Main loop
 	update : function(){
-		this.player.update();
+
+		if(this.isGameOver) return;
 
 		//Check player and enemy collision
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHitPlayer, this.isEnemyDead, this);
@@ -286,13 +298,21 @@ app.main = {
 	},
 
 	gameOver : function(){
+		this.gameplaySong.fadeOut(500);
+		this.gameoverSong.volume = 1;
+		this.gameoverSong.loopFull();
+		this.enemies.setAll('alive', false);
+		this.enemies.setAll('body.velocity', new Phaser.Point(0, 0));
+
+		this.player.alive = false;
+		this.player.body.velocity = new Phaser.Point(0, 0);
+		this.manaPickups.setAll('lifespan', 0);
 		this.updateHighScore();
 		this.gameOverText1.visible = true;
 		this.gameOverText2.visible = true;
 		this.highScoreText.visible = true;
 		this.isGameOver = true;
-		this.game.input.onDown.addOnce(this.resetGame, this);
-		this.game.paused = true;
+		this.game.input.onTap.addOnce(this.resetGame, this);
 	},
 
 	createText : function(string, x, y, size, font, fill){

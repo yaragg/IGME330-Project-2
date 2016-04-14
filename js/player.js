@@ -29,6 +29,7 @@ window.Player = (function(){
 	Player.prototype.constructor = Player;
 
 	Player.prototype.update = function(){
+		if(!this.alive) return;
 		this.body.velocity.x = 0;
     	this.body.velocity.y = 0;
 
