@@ -6,13 +6,8 @@ app.main = {
 	game : undefined,
 	width: 800,
 	height : 600,
-	land : undefined,
-	player : undefined,
-	playerShots : undefined,
 	enemies : [],
-	lives : undefined,
 	STARTING_LIVES : 3,
-	keyboard : undefined,
 	enemyRate : 0.5/60,
 	maxEnemyRate : 3/60,
 	enemyRateIncrease : 1/600,
@@ -20,11 +15,7 @@ app.main = {
 	manaSpawnRate : 1/80,
 	pickupLifespan : 10000, //10 seconds
 	score : 0,
-	scoreText : undefined,
-	pauseText : undefined,
-	gameOverText1 : undefined,
-	gameOverText2 : undefined,
-	titleMenu : undefined,
+	isGameOver : false,
 
 	init : function(){
 		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
@@ -144,7 +135,15 @@ app.main = {
 		this.gameOverText1 = this.createText('Game Over', this.game.width/2, this.game.height/2, 68, "Gondola SD", "red");
 		this.gameOverText1.visible = false;
 		this.gameOverText1.anchor.setTo(0.5, 0.5);
-		this.gameOverText2 = this.createText('Click to restart', this.game.width/2, this.game.height/2 + 60);
+		this.highScoreText = this.createText('High score: 0', this.game.width/2, this.game.height/2 + 60);
+		this.highScoreText.visible = false;
+		this.highScoreText.anchor.setTo(0.5, 0.5);
+
+		this.newHighScoreText = this.createText('New!', this.game.width/2-120, this.game.height/2 + 65, 20, "Gondola SD", "orange");
+		this.newHighScoreText.visible = false;
+		this.newHighScoreText.anchor.setTo(0.5, 0.5);
+
+		this.gameOverText2 = this.createText('Click to restart', this.game.width/2, this.game.height/2 + 120, null, null, "#ff8282");
 		this.gameOverText2.visible = false;
 		this.gameOverText2.anchor.setTo(0.5, 0.5);
 
@@ -175,13 +174,16 @@ app.main = {
 		this.player.mana = this.player.maxMana;
 		this.gameOverText1.visible = false;
 		this.gameOverText2.visible = false;
+		this.highScoreText.visible = false;
+		this.newHighScoreText.visible = false;
+		this.isGameOver = false;
 		this.game.paused = false;
 		this.updateScore();
 	},
 
 	//Sets game pause state equal to argument and displays text if paused
 	pauseGame : function(state){
-		if(state != this.game.paused){
+		if(!this.isGameOver && state != this.game.paused){
 			this.pauseText1.visible = state;
 			this.pauseText2.visible = state;
 			this.game.paused = state;	
@@ -284,8 +286,11 @@ app.main = {
 	},
 
 	gameOver : function(){
+		this.updateHighScore();
 		this.gameOverText1.visible = true;
 		this.gameOverText2.visible = true;
+		this.highScoreText.visible = true;
+		this.isGameOver = true;
 		this.game.input.onDown.addOnce(this.resetGame, this);
 		this.game.paused = true;
 	},
@@ -297,6 +302,17 @@ app.main = {
 			text.fontSize = size || 44;
 			text.fixedToCamera = true;
 			return text;
+	},
+
+	updateHighScore : function(){
+		var highScore = window.localStorage.getItem("highScore");
+		if(highScore == null || this.score > highScore) {
+			window.localStorage.setItem("highScore", this.score);
+			highScore = this.score;
+			this.newHighScoreText.visible = true;
+		}
+		this.highScoreText.text = "High score: " + highScore;
+
 	}
 
 }
