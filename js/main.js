@@ -13,7 +13,10 @@ app.main = {
 	lives : undefined,
 	STARTING_LIVES : 3,
 	keyboard : undefined,
-	enemyRate : 1/60,
+	enemyRate : 0.5/60,
+	maxEnemyRate : 3/60,
+	enemyRateIncrease : 1/600,
+	lastEnemyRateIncrease : 0,
 	manaSpawnRate : 1/80,
 	pickupLifespan : 10000, //10 seconds
 	score : 0,
@@ -187,6 +190,12 @@ app.main = {
 
 	//Display updated score
 	updateScore : function(){
+		if((this.score - this.lastEnemyRateIncrease)%25==0){
+			this.lastEnemyRateIncrease = this.score;
+			this.enemyRate += this.enemyRateIncrease;
+			if(this.enemyRate > this.maxEnemyRate) this.enemyRate = this.maxEnemyRate;
+		}
+
 		this.scoreText.setText('Score: ' + this.score);
 	},
 
