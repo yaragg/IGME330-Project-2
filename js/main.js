@@ -8,6 +8,7 @@ app.main = {
 	height : 600,
 	enemies : [],
 	STARTING_LIVES : 3,
+	initialEnemyRate : 0.5/60,
 	enemyRate : 0.5/60, //Current chance an enemy will spawn, per frame
 	maxEnemyRate : 3/60, //Maximum spawning rate
 	enemyRateIncrease : 1/600, //Spawn rate increase
@@ -171,6 +172,8 @@ app.main = {
 	},
 
 	resetGame : function(){
+		this.enemyRate = this.initialEnemyRate;
+		this.lastEnemyRateIncrease = 0;
 		this.gameoverSong.fadeOut(500);
 		this.gameplaySong.volume = 1;
 		this.gameplaySong.loopFull();
