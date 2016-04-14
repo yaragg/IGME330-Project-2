@@ -31,6 +31,8 @@ A top down shooter with magic, for Rich Media Web App Development class. Made wi
 
 [Mana bar](http://opengameart.org/content/health-and-manabars-100x12px-200x24px) by [Scrittl](http://opengameart.org/users/scrittl), available under [CC-BY-3.0](http://creativecommons.org/licenses/by/3.0/)
 
+[Book background](http://opengameart.org/content/old-pagesflip-with-sound) by [yd](http://opengameart.org/users/yd), available under [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
+
   
 
 **Fonts**
