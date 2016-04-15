@@ -122,8 +122,7 @@ app.main = {
 		//Setup score display
 		this.scoreText = this.createText('Score: 0', this.game.width - 10, 10, 48);
 		this.scoreText.anchor.setTo(1, 0);
-		//Increment score every second
-		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
+		
 
 		//Setup texts
 		this.pauseText1 = this.createText('Game paused', this.game.width/2, this.game.height/2, 60, "Gondola SD");
@@ -164,6 +163,8 @@ app.main = {
 	},
 
 	startGame : function(){
+		//Increment score every second
+		this.game.time.events.loop(Phaser.Timer.SECOND, this.incrementScore, this);
 		this.titleSong.fadeOut(500); 
 		this.gameplaySong.loopFull(); 
 		this.titleMenu.visible = false; 
