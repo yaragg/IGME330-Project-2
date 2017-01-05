@@ -17,12 +17,17 @@ app.main = {
 	pickupLifespan : 10000, //Pickups disappear after 10 seconds
 	score : 0,
 	isGameOver : true,
+	loadingText : undefined,
 
 	init : function(){
 		this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: this.preload.bind(this), create: this.create.bind(this), update: this.update.bind(this) });
 	},
 
 	preload : function(){
+		//Create loading text
+		this.loadingText = this.createText('Loading...', this.game.width/2, this.game.height/2, 32, "Gondola SD", "#fff");
+		this.loadingText.anchor.setTo(0.5, 0.5);
+
 		//Load images
 		this.game.load.image('player', 'images/wizard.png');
 	    this.game.load.spritesheet('magicDart', 'images/magicDart.png', 32, 32);
@@ -57,6 +62,7 @@ app.main = {
 
 	create : function(){
 		//Pause game if window loses focus
+		this.loadingText.visible = false;
 		this.game.onBlur.add(function(){this.pauseGame(true);}, this);
 
 		this.game.input.mouse.capture = true;
